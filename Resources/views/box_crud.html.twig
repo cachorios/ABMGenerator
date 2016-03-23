@@ -1,3 +1,25 @@
+<style>
+    ul.rb-toolbar {
+        display: inline-block;
+        list-style: outside none none;
+        /*position: absolute;*/
+        right: 10px;
+        top: 0;
+
+    }
+
+    ul.rb-toolbar li {
+
+        display: inline-block;
+        padding: 2px auto;
+        vertical-align: middle;
+        line-height: 30px;
+    }
+    ul.rb-toolbar li.tool-space-rigth {
+        width: 55px;
+    }
+</style>
+
 <div class="widget">
     <div class="widget-header  with-footer">
         <span class="widget-caption">{{ titulo | raw }}</span>
@@ -10,14 +32,12 @@
                 <a data-toggle="collapse" href="#">
                     <i class="fa fa-minus"></i>
                 </a>
-                {#<a data-toggle="dispose" href="#">#}
-                    {#<i class="fa fa-times"></i>#}
-                {#</a>#}
+
             </div>
         {% endblock %}
 
     </div>
-    <div class="widget-body" style="height: auto;">
+    <div class="widget-body" >
 
         <div class="flip-scroll">
             {% block rb_contenido %}Contenido{% endblock %}
@@ -28,6 +48,7 @@
         <div class="widget-buttons">
             {% block rb_widget_footer_buttons %}{% endblock %}
         </div>
+        {{ "<br><br>" }}
     </div>
 </div>
 

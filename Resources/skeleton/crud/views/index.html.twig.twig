@@ -23,84 +23,66 @@
     {{ "            {% endfor %} " }}
     {{ "        {% endfor %}" }}
 
-<form method='post' action='.'>
+                <form method='post' action='.'>
     {{ "            {% embed '"~ box_modal ~"' with { 'modal_id': 'filters', 'modal_titulo': 'Filtro de "~ entity ~"s'} %} " }}
     {{ "                {% block modal_contenido %} " }}
     {{ "                    {{ form_rest(filterform) }} " }}
     {{ "                {% endblock %} " }}
 
     {{ "                {% block modal_botones %} " }}{{ '\n' }}
-    <input type='submit' class='btn btn-success' name='submit-filter' value='Aplicar'/>{{ '\n' }}
-    <input type='submit' class='btn btn-primary' name='submit-filter' value="reset"/>{{ '\n' }}
+            <input type='submit' class='btn btn-success' name='submit-filter' value='Aplicar'/>{{ '\n' }}
+            <input type='submit' class='btn btn-primary' name='submit-filter' value="reset"/>{{ '\n' }}
     {{ "                {% endblock modal_botones %} " }}
     {{ "            {% endembed %} " }}
-</form>
+                </form>
 
 
-<table class="table table-bordered table-striped table-condensed flip-content">
-    <thead class="flip-content bordered-palegreen">
-    <tr>{{ '\n' }}
-        {%- for field, metadata in fields %}
-            <th>{{ "{{ knp_pagination_sortable(pager, '"~ field ~ "' ,'q." ~ field ~ "') }}" }}</th>{{ '\n' }}
+        <table class="table table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content bordered-palegreen">
+            <tr>{{ '\n' }}
+                {%- for field, metadata in fields %}
+                    <th>{{ "{{ knp_pagination_sortable(pager, '"~ field ~ "' ,'q." ~ field ~ "') }}" }}</th>{{ '\n' }}
 
-        {%- endfor %}
-        <th>{{ "{{'Acciones'|trans }}" }}</th>{{ '\n' }}
-    </tr>
-    </thead>
-    <tbody>
-    {{ '{% for entity in pager %}' }}
-    <tr>{{ '\n' }}
-        {%- for field, metadata in fields %}
-            {%- if loop.first and ('show' in actions) %}
-                <td>
-                <a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity.id }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a>
-                </td>{{ '\n' }}
-            {%- elseif metadata.type in ['date', 'datetime'] %}
-                <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>{{ '\n' }}
-            {%- elseif metadata.type in ['boolean'] %}
-                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ '? \'<span class="label label-primary">Si</span>\' : \'<span class=\"label label-default\">No</span>\'  }}' }}</td>
-            {%- else %}
-                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>{{ '\n' }}
-            {%- endif %}
+                {%- endfor %}
+                <th>{{ "{{'Acciones'|trans }}" }}</th>{{ '\n' }}
+            </tr>
+            </thead>
+            <tbody>
+            {{ '{% for entity in pager %}' }}
+            <tr>{{ '\n' }}
+                {%- for field, metadata in fields %}
+                    {%- if loop.first and ('show' in actions) %}
+                        <td>
+                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity.id }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a>
+                        </td>{{ '\n' }}
+                    {%- elseif metadata.type in ['date', 'datetime'] %}
+                        <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>{{ '\n' }}
+                    {%- elseif metadata.type in ['boolean'] %}
+                        <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ '? \'<span class="label label-primary">Si</span>\' : \'<span class=\"label label-default\">No</span>\'  }}' }}</td>
+                    {%- else %}
+                        <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>{{ '\n' }}
+                    {%- endif %}
 
-            {%- if loop.last %}
-                <td>
-                {%- include "crud/views/others/actions.html.twig" %}
-                </td>{{ '\n' }}
-            {%- endif %}
-        {%- endfor %}
-    </tr>
-    {{ '{% else %}' }}
-    <tr>
-        <td class="last-row" colspan="100" style="text-align: center;">{{ "{{'sin resultados'|trans }}" }}</td>
-    </tr>
-    {{ '{% endfor %}' }}
-    </tbody>
-</table>
+                    {%- if loop.last %}
+                        <td>
+                        {%- include "crud/views/others/actions.html.twig" %}
+                        </td>{{ '\n' }}
+                    {%- endif %}
+                {%- endfor %}
+            </tr>
+            {{ '{% else %}' }}
+            <tr>
+                <td class="last-row" colspan="100" style="text-align: center;">{{ "{{'sin resultados'|trans }}" }}</td>
+            </tr>
+            {{ '{% endfor %}' }}
+            </tbody>
+        </table>
 
-{{ "     {% endblock rb_contenido %} " }}
+    {{ "     {% endblock rb_contenido %} " }}
 
     {% if toolbar_pos in {0:'top' , 1:'both'} %}
         {{ "     {% block rb_widget_header_buttons %} " }}
-        <style>
-            ul.rb-toolbar {
-                display: inline-block;
-                list-style: outside none none;
-                position: absolute;
-                right: 10px;
-                top: 0;
 
-            }
-
-            ul.rb-toolbar li {
-
-                display: inline-block;
-                padding: 2px auto;
-                vertical-align: middle;
-                line-height: 30px;
-
-            }
-        </style>
         <ul class="rb-toolbar">
             {% if 'new' in actions %}
                 <li>
@@ -113,16 +95,16 @@
                 </li>
             {% endif %}
             <li>
-            <a href="#" data-toggle='modal' data-target='#filters'>
-                <i class="fa fa-filter"></i> Filtro
-            </a>&nbsp;&nbsp;&nbsp;
+                <a href="#" data-toggle='modal' data-target='#filters'>
+                    <i class="fa fa-filter"></i> Filtro
+                </a>&nbsp;&nbsp;
             </li>
             <li>
-            {{ '        {{ knp_pagination_render(pager) }}' }}{{ '\n' }}
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                {{ '        {{ knp_pagination_render(pager) }}' }}{{ '\n' }}
+                &nbsp;&nbsp;
             </li>
             <li>
-            {{ "       {{ parent() }} " }}
+                {{ "       {{ parent() }} " }}
             </li>
 
         </ul>
@@ -130,25 +112,36 @@
     {% endif %}
 
     {% if toolbar_pos in {0:'footer' , 1:'both'} %}
-    {{ "     {% block rb_widget_footer_buttons %} " }}
-        {% if 'new' in actions %}
+        {{ "     {% block rb_widget_footer_buttons %} " }}
+            <ul class="rb-toolbar">
+                {% if 'new' in actions %}
+                <li>
+                    <a class="{{ btn_new['class'] }}" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">{{ '\n' }}
+                        &nbsp;
+                        <i class="{{ btn_new['icon'] }}"></i>
+                        {{ "{{'"~  btn_new['label']  ~" " ~ entity ~ "'|trans }}&nbsp;" }}{{ '\n' }}&nbsp;
 
-<a class="{{ btn_new['class'] }}" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">{{ '\n' }}
-    &nbsp;
-    <i class="{{ btn_new['icon'] }}"></i>
-    {{ "{{'"~  btn_new['label']  ~" " ~ entity ~ "'|trans }}&nbsp;" }}{{ '\n' }}&nbsp;
-</a>{{ '\n' }}
-<a href="#" data-toggle='modal' data-target='#filters'>
-    &nbsp;&nbsp;
+                    </a>&nbsp;&nbsp;{{ '\n' }}
+                </li>
+                {% endif %}
+                <li>
+                    <a href="#" data-toggle='modal' data-target='#filters'>
+                        <i class="fa fa-filter"></i> Filtro
+                    </a>&nbsp;&nbsp;
+                </li>
+                <li>
+                    {{ '        {{ knp_pagination_render(pager) }}' }}{{ '\n' }}
+                    &nbsp;&nbsp;
+                </li>
+                <li class="tool-space-rigth">
+
+                </li>
+             </ul>
+        {{ "     {% endblock %} " }}
     {% endif %}
-    {{ '{{ knp_pagination_render(pager) }}' }}{{ '\n' }}
-
-    {{ "     {% endblock %} " }}
-    {% endif %}
 
 
+        {{ " {% endembed %} " }}
 
-    {{ " {% endembed %} " }}
-
-    {{ "{% endblock " ~ block_content ~ " -%}" }}
+        {{ "{% endblock " ~ block_content ~ " -%}" }}
     {% endblock body %}
