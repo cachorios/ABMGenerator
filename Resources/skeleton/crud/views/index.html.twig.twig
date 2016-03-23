@@ -88,6 +88,9 @@
                 </a>{{ '\n' }}
                 &nbsp;&nbsp;
             {% endif %}
+            <a href="#" data-toggle='modal' data-target='#filters'>
+            <i class="fa fa-filter"></i> Filtro
+        </a>
             {{ '        {{ knp_pagination_render(pager) }}' }}{{ '\n' }}
                 <a href=""></a>
         {{"         {{ parent() }} "}}
@@ -103,6 +106,7 @@
             <i class="{{ btn_new['icon'] }}"></i>
             {{ "{{'"~  btn_new['label']  ~" " ~ entity ~ "'|trans }}&nbsp;" }}{{ '\n' }}&nbsp;
             </a>{{ '\n' }}
+            <a href="#" data-toggle='modal' data-target='#filters'>
             &nbsp;&nbsp;
         {% endif %}
             {{ '{{ knp_pagination_render(pager) }}' }}{{ '\n' }}
