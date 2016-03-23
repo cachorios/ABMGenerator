@@ -1,0 +1,62 @@
+{% block extends %}
+    {{ "{% extends '"~ layout_gral ~ "' %}" }}
+{% endblock extends %}
+    {{ "{% block id '" ~entity~ "' %} " }}
+    {% block body %}
+        {{ "{% block " ~ block_content ~ " -%}" }}
+        {{ "{% embed '"~ box_crud ~"' with {'titulo': 'Nuevo " ~  entity  ~ "' } %}" }}
+
+        {#{{ "    {% block in_header %} " }}#}
+        {#{% set hide_edit, hide_delete = true, true %}#}
+        {#<div class='pull-right'>#}
+            {#<div class="row">#}
+                {#{% include 'crud/views/others/record_actions.html.twig' %}#}
+            {#</div>#}
+        {#</div>#}
+        {#{{ "    {% endblock %}" }}#}
+
+        {{ "      {% block rb_contenido %} " }}
+        {{ "        {% for type, flashMessages in app.session.flashbag.all() %} " }}
+        {{ "            {% for flashMessage in flashMessages %} " }}
+        {{ "                <div class='alert alert-{{ type }}'> " }}
+                    <button data-dismiss="alert" class="close">
+                        ×
+                    </button>
+        {{ "                    {{ flashMessage }} " }}
+        {{ "                </div> " }}
+        {{ "            {% endfor %} " }}
+        {{ "        {% endfor %}" }}
+
+        {{ '
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="col-sm-offset-2 inner-actions">
+                    <button title="Guardar"         class="form-submit-button btn btn-xs btn-info " value="save_and_add" name="save_mode" type="submit">Guardar y Nuevo <span class="glyphicon glyphicon-ok"></span></button>
+                    <button title="Guardar y Salir" class="form-submit-button btn btn-xs btn-primary" value="save_and_close" name="save_mode" type="submit">Guardar<span class="glyphicon glyphicon-ok"></span></button>
+                </div>
+
+            {{ form_end(form) }}
+        ' }}
+
+
+
+        {{ "{% endblock rb_contenido %} " }}
+
+        {{ "{% block rb_widget_buttons %} "}}
+            <a class="btn btn-default btn-xs" href="{{ '{{ path(\''~ route_name_prefix ~'\') }}' }}">&nbsp;
+                <span class="fa fa-times"></span>Ir a Lista&nbsp;&nbsp;</a>
+        {#&nbsp;#}
+            {{ '{{ parent() }}' }}
+        {{ "{% endblock %} " }}
+
+        {{ "    {% block rb_widget_footer_buttons %} "}}
+        <a class="btn btn-default btn-xs" href="{{ '{{ path(\''~ route_name_prefix ~'\') }}' }}">&nbsp;
+            <span class="fa fa-times"></span>Ir a Lista&nbsp;&nbsp;</a>
+        {#&nbsp;#}
+
+        {{ "    {% endblock %} "}}
+
+        {{ "{% endembed %} " }}
+
+        {{ "{% endblock  %}" }}
+    {% endblock body %}

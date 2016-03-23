@@ -1,0 +1,89 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Lista completa de la entidad {{ entity }} .
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}")
+     * @ Method("GET")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function indexAction(Request $request)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+    list($filterForm, $queryBuilder) = $this->filter($request);
+    $pager = $this->getPager($queryBuilder, $request);
+{% endblock method_body %}
+
+{% block method_return %}
+
+    return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/index.html.twig', array(
+        'pager' => $pager,
+        'filterform'    => $filterForm->createView(),
+    ));
+{% endblock method_return %}
+    }
+
+    /**
+    * Crea el paginador Pagerfanta
+    * @param Request $request
+    * @return SlidingPagination
+    * @throws NotFoundHttpException
+    */
+    private function getPager($q, Request $request)
+    {
+        $paginator  = $this->get('knp_paginator');
+
+    $pager = $paginator->paginate(
+            $q,
+            $request->query->get('page', 1) /*Numero de pagina*/,
+            8, /*registros por pagina*/
+            array('distinct' => false)
+        );
+        return $pager;
+
+    }
+
+    /**
+    * Crar filtro a con LexikFilterBundle
+    */
+    private function filter(Request $request)
+    {
+        $session = $request->getSession();
+        $filterForm = $this->createForm({{ entity }}FilterType::class);
+
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder("q");
+
+        // Reset filter
+        if ($request->getMethod() == 'POST' && $request->get('submit-filter') == 'reset') {
+            $session->remove('{{ entity }}ControllerFilter');
+        }
+
+        // Filter action
+        if ($request->getMethod() == 'POST' && $request->get('submit-filter') == 'Aplicar') {
+
+            $filterForm->handleRequest($request);
+            if ($filterForm->isValid()) {
+                // Construir la consulta de un objeto determinada
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+                // Save filter to session
+                $filterData = $filterForm->getData();
+                $session->set('{{ entity }}ControllerFilter', $filterData);
+            }
+        } else {
+            // Get filter from session
+            if ($session->has('{{ entity }}ControllerFilter')) {
+                $filterData = $session->get('{{ entity }}ControllerFilter');
+                $filterForm = $this->createForm({{ entity }}FilterType::class, $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+           }
+        }
+        return array($filterForm, $queryBuilder);
+    }
+

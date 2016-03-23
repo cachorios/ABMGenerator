@@ -1,0 +1,60 @@
+{% block extends %}
+    {{ "{% extends '"~ layout_gral ~ "' %}" }}
+{% endblock extends %}
+{{ "{% block id '" ~entity~ "' %} " }}
+{% block body %}
+    {{ "{% block " ~ block_content ~ " -%}" }}
+    {{ "{% embed '"~ box_crud ~"' with {'titulo': 'Ver " ~  entity  ~ ": ' ~ "~  entity_singularized ~ "} %}" }}
+
+
+    {{ "      {% block rb_contenido %} " }}
+    <p></p>
+
+    <table class="table">
+        <tbody>
+        {%- for field, metadata in fields %}
+
+            <tr>
+                <th class="show-header">{{ field|capitalize }}</th>
+
+                {%- if metadata.type in ['date', 'datetime'] %}
+
+                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+                {%- elseif metadata.type in ['boolean'] %}
+
+                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '? \'<span class="label label-success">Si</span>\' : \'<span class=\"label label-default\">No</span>\'  }}' }}</td>
+
+                {%- else %}
+
+                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                {%- endif %}
+
+            </tr>
+
+        {%- endfor %}
+
+        </tbody>
+    </table>
+
+
+    {{ "      {% endblock rb_contenido %} " }}
+
+    {{ "{% block rb_widget_header_buttons %} "}}
+    {% set hide_edit, hide_delete = false, false %}
+        {% include 'crud/views/others/record_actions.html.twig' %}
+
+        {{ '{{ parent() }}' }}
+    {{ "{% endblock %} " }}
+    {{ "    {% block rb_widget_footer_buttons %} "}}
+        {% set hide_edit, hide_delete = true, false %}
+        {% include 'crud/views/others/record_actions.html.twig' %}
+    {{ "    {% endblock %} "}}
+
+
+
+    {{ "{% endembed %} "}}
+
+    {{ "{% endblock " ~ block_content ~ " -%}" }}
+{% endblock body %}

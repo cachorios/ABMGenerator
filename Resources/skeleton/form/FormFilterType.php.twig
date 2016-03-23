@@ -1,0 +1,57 @@
+<?php
+
+namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+{#use Symfony\Component\Form\FormEvent;#}
+{#use Symfony\Component\Form\FormEvents;#}
+{#use Symfony\Component\Form\FormError;#}
+
+class {{ form_class }} extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+        {%- for data in fields_data %}
+
+            ->add('{{ data.fieldName }}', {{ "Filters\\" ~data.filterWidget ~ "::class" }})
+
+        {%- endfor %}
+
+        ;
+
+        {#$listener = function(FormEvent $event)#}
+        {#{#}
+            {#// Is data empty?#}
+            {#foreach ($event->getData() as $data) {#}
+                {#if(is_array($data)) {#}
+                    {#foreach ($data as $subData) {#}
+                        {#if(!empty($subData)) return;#}
+                    {#}#}
+                {#}#}
+                {#else {#}
+                    {#if(!empty($data)) return;#}
+                {#}#}
+            {#}#}
+
+            {#$event->getForm()->addError(new FormError('Filtro limpio'));#}
+        {#};#}
+        {#$builder->addEventListener(FormEvents::POST_SUBMIT, $listener);#}
+    }
+
+    public function getBlockPrefix()
+    {
+        return '{{ form_filter_type_name }}';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'csrf_protection'   => false,
+            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
+        ));
+    }
+}

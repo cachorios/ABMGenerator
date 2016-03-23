@@ -1,0 +1,39 @@
+{% block extends %}
+    {{ "{% extends '"~ layout_gral ~ "' %}" }}
+{% endblock extends %}
+    {{ "{% block id '" ~entity~ "' %} " }}
+    {% block body %}
+        {{ "{% block " ~ block_content ~ " -%}" }}
+        {{ "{% embed '"~ box_crud ~"' with {'titulo': 'Editar " ~  entity  ~ ": ' ~ "~ entity_singularized ~"} %}" }}
+
+        {{ "      {% block rb_contenido %} " }}
+        {{ '
+            {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+                <div class="col-sm-offset-2 inner-actions">
+                    <input type="submit" value="Guardar" class="form-submit-button btn btn-sm btn-default btn-primary">
+                </div>
+
+            {{ form_end(edit_form) }}
+        ' }}
+
+        {{ "{% endblock rb_contenido %} " }}
+
+        {{ "   {% block rb_widget_buttons %} " }}
+
+            {% set hide_edit, hide_delete = true, false %}
+            {% include 'crud/views/others/record_actions.html.twig' %}
+            {{ '{{ parent() }}' }}
+
+        {{ "{% endblock %} " }}
+
+        {{ "    {% block rb_widget_footer_buttons %} " }}
+        {% set hide_edit, hide_delete = true, false %}
+        {% include 'crud/views/others/record_actions.html.twig' %}
+        {{ "    {% endblock %} " }}
+
+        {{ "{% endembed %} " }}
+
+        {{ "{% endblock " ~ block_content ~ " -%}" }}
+
+    {% endblock body %}

@@ -1,0 +1,8 @@
+services:
+#    abm_generator.example:
+#        class: RBSoft\ABMGeneratorBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+    rbsoft.crud:
+        class: RBSoft\ABMGeneratorBundle\EventListener\DumpVar
+#        arguments: [%rbsoft.crud%]
+

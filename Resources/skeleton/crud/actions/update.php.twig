@@ -1,0 +1,42 @@
+    /**
+{% block phpdoc_method_header %}
+     * Actualiza un registro de {{ entity }}.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_update")
+     * @Method("PUT")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function updateAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $em = $this->getDoctrine()->getManager();
+
+
+
+        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
+        $editForm = $this->createEditForm(${{ entity_singularized }});
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('info',"El/la {{ entity }} ${{ entity_singularized }} se actualizó correctamente.");
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+        }
+{% endblock method_body %}
+
+{% block method_return %}
+
+    return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig', array(
+    '{{ entity_singularized }}'      => ${{ entity_singularized }},
+    'edit_form'   => $editForm->createView(),
+    'delete_form' => $deleteForm->createView(),
+    ));
+
+{% endblock method_return %}
+    }

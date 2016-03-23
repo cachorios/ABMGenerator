@@ -1,0 +1,36 @@
+{% if ('delete' in actions) and ('edit' in actions) and (not hide_delete) and ( not hide_edit) %}
+
+
+    {{ '{{ form_start(delete_form, {"attr": {"style": "display: inline"}}) }} ' }}
+    {{ '{{ form_widget(delete_form.delete) }}' }}
+    {{ '{{ form_end(delete_form) }}' }}
+
+
+    <a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': "~ entity_singularized ~".id }) }}" }}"
+       class="btn btn-xs btn-info">
+        Editar
+    </a>
+
+{% endif %}
+
+{% if ('delete' in actions) and (not hide_delete) and ( hide_edit) %}
+    {{ '{{ form_start(delete_form, {"attr": {"style": "display: inline"}}) }} ' }}
+    {{ '{{ form_widget(delete_form.delete) }}' }}
+    {{ '{{ form_end(delete_form) }}' }}
+{% endif %}
+
+{% if ('edit' in actions) and (not hide_edit) and hide_delete %}
+
+    <a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': "~ entity_singularized ~".id }) }}" }}"
+       class="btn btn-sm btn-info">
+        Editar
+    </a>
+
+{% endif %}
+
+{#class="btn btn-sm btn-default"#}
+<a href="{{ "{{ path('" ~ route_name_prefix ~ "') }}" }}"  class="btn btn-xs btn-default">
+    &nbsp;    <i class="fa fa-times"></i>  Ir a la lista &nbsp;
+</a>
+
+

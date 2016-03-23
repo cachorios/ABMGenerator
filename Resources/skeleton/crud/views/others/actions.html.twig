@@ -1,0 +1,28 @@
+
+{% set msg = { 'show':     'Ver mas información',
+'edit':     'Editar los datos',
+'delete':   'Eliminar el registro'
+} %}
+
+{% set css_class = {
+'show':     'btn-default',
+'edit':     'btn-info',
+'delete':   'btn-danger'
+}%}
+
+{% set icono = {
+'show':     'glyphicon-eye-open',
+'edit':     'glyphicon-edit',
+'delete':   'glyphicon-trash'
+}%}
+
+
+
+
+    {%- for action in record_actions %}
+    <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"
+       class="btn btn-xs {{ attribute(css_class,action) }} rb_{{ action }}" data-toggle="tooltip" data-placement="top" title="{{ attribute(msg,action) }}" >
+        <span class="glyphicon {{ attribute(icono,action) }}"></span>
+        </a>{{ '\n' }}
+    {%- endfor %}
+

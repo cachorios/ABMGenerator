@@ -1,0 +1,54 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Muestra un formulario para editar un registro de {{ entity }}.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
+     * @Method("GET")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function editAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
+{% endblock method_definition %}
+    {
+{% block method_body %}
+
+
+        $editForm = $this->createEditForm(${{ entity_singularized }});
+        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
+{% endblock method_body %}
+
+{% block method_return %}
+
+    return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig', array(
+        '{{ entity_singularized }}'      => ${{ entity_singularized }},
+        'edit_form'   => $editForm->createView(),
+        'delete_form' => $deleteForm->createView(),
+    ));
+{% endblock method_return %}
+    }
+
+{% block form %}
+    /**
+    * Crea formulario de {{ entity }} para editar.
+    *
+    * @param {{ entity_class }} ${{ entity_singularized }}
+    *
+    * @return \Symfony\Component\Form\Form $form
+    */
+    private function createEditForm({{ entity_class }} ${{ entity_singularized }})
+    {
+        $form = $this->createForm( {{ entity_class }}Type::class, ${{ entity_singularized }}, array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity_singularized }}->getId())),
+            'method' => 'PUT',
+        ));
+
+        {#$form->add('submit', 'submit', array('label' => 'Guardar'));#}
+
+        return $form;
+    }
+{% endblock form %}
