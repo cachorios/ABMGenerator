@@ -83,7 +83,7 @@
     {% if toolbar_pos in {0:'top' , 1:'both'} %}
         {{ "     {% block rb_widget_header_buttons %} " }}
 
-        <ul class="rb-toolbar">
+        <ul class="rb-toolbar pull-right">
             {% if 'new' in actions %}
                 <li>
                     <a class="{{ btn_new['class'] }}"
@@ -113,7 +113,7 @@
 
     {% if toolbar_pos in {0:'footer' , 1:'both'} %}
         {{ "     {% block rb_widget_footer_buttons %} " }}
-            <ul class="rb-toolbar">
+            <ul class="rb-toolbar pull-right">
                 {% if 'new' in actions %}
                 <li>
                     <a class="{{ btn_new['class'] }}" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">{{ '\n' }}

@@ -30,6 +30,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('box_crud')->defaultValue('@ABMGenerator/box_crud.html.twig')->end()
                     ->scalarNode('box_modal')->defaultValue('@ABMGenerator/modal.html.twig')->end()
                     ->scalarNode('toolbar_pos')->defaultValue('both')->end() ## top, footer, both
+            //index_header_action_show: [nuevo, filtro, paginacion]
+            //index_footer_action_show: [nuevo, filtro, paginacion]
 
                     ->arrayNode('btn_new')
                         ->addDefaultsIfNotSet()
@@ -39,8 +41,14 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('class')->defaultValue('btn btn-primary btn-sm ')->end()
                         ->end()
                     ->end()
-
             ->end()
+
+            ->children()
+               ->arrayNode('index_header_action_show')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+
 
 
 //            ->scalarNode('where_method')
@@ -56,7 +64,9 @@ class Configuration implements ConfigurationInterface
 //            ->info('Whether to do case insensitive LIKE comparisons.')
 //            ->defaultNull()
 //            ->end()
-            ->end();
+        ->end();
+
+
 
         return $treeBuilder;
     }
