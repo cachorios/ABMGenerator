@@ -1,9 +1,9 @@
 {
-    "name": "rbsoft/abm_generator_bundle",
+    "name": "rbsoft/abm-generator",
     "type": "symfony-bundle",
     "description": "Este bundle permite generar abm o crud en forma sencilla",
     "keywords": ["Symfony3", "bundle", "crud", "abm", "doctrine"],
-    "homepage": "https://github.com/cachorios/Abm",
+    "homepage": "https://github.com/cachorios/ABMGenerator",
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -27,8 +27,9 @@
         "lexik/form-filter-bundle": "~5.0",
         "knplabs/knp-paginator-bundle": "dev-master"
     },
+    
     "autoload":     {
-        "psr-4": { "RBSoft\\Bundle\\ABMGeneratorBundle\\": "" }
+        "psr-4": { "RBSoft\\ABMGeneratorBundle\\": "" }
     },
     "config": {
         "bin-dir": "bin"
