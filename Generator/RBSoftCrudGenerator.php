@@ -222,10 +222,13 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'actions' => $this->actions,
             'fields' => $this->metadata->fieldMappings,
 
-            'layout_gral' => $this->config['plantillas']['layout_gral'],
-            'block_content' => $this->config['plantillas']['block_content'],
-            'box_crud' => $this->config['plantillas']['box_crud'],
-            'box_modal' => $this->config['plantillas']['box_modal'],
+            'plantillas' => $this->config['plantillas'],
+            'new_cfg' => $this->config['new']
+
+//            'layout_gral' => $this->config['plantillas']['layout_gral'],
+//            'block_content' => $this->config['plantillas']['block_content'],
+//            'box_crud' => $this->config['plantillas']['box_crud'],
+//            'box_modal' => $this->config['plantillas']['box_modal'],
         ));
     }
 

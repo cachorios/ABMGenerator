@@ -90,7 +90,7 @@
             <li>
                 {% set etiqueta = accion.label %}
                 {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
-                {% include "crud/views/others/new_"~key~".html.twig"  %}
+                {% include "crud/views/others/index_"~key~".html.twig"  %}
             </li>
         {% endfor %}
 
@@ -108,7 +108,7 @@
             <li>
                 {% set etiqueta = accion.label %}
                 {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
-                {% include "crud/views/others/new_"~key~".html.twig"  %}
+                {% include "crud/views/others/index_"~key~".html.twig"  %}
             </li>
         {% endfor %}
         <li class="tool-space-rigth">

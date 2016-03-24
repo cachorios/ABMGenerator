@@ -21,6 +21,7 @@
 </style>
 
 <div class="widget">
+    {% block form_inicio %}{% endblock form_inicio %}
     <div class="widget-header  with-footer">
         <span class="widget-caption">{{ titulo | raw }}</span>
 
@@ -50,5 +51,6 @@
         </div>
         {{ "<br><br>" }}
     </div>
+    {% block form_fin %}{% endblock form_fin %}
 </div>
 

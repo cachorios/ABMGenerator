@@ -29,3 +29,5 @@ Running the test suite
 
     composer install
     bin/phpunit
+
+composer require rbsoft/abm-generator
