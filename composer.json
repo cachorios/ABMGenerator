@@ -21,7 +21,7 @@
         "symfony/framework-bundle": "~2.8|~3.0",
         "symfony/form": "~2.8|~3.0",
         "doctrine/orm": "^2.4.8",
-        "lexik/form-filter-bundle": "~5.0",
+        "lexik/form-filter-bundle": "~5.0"
     },
     "require-dev": {
         "knplabs/knp-paginator-bundle": "dev-master"
