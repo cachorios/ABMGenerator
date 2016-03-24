@@ -26,11 +26,12 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
 {
     protected $formFilterGenerator;
     protected $config;
+    protected $btnAction;
 
-
-    public function setCrudParm($config){
+    public function setCrudParm($config)
+    {
         $this->config = $config;
-     }
+    }
 
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite)
     {
@@ -53,13 +54,13 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     public function generateFormFilter(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite)
     {
-        $parts       = explode('\\', $entity);
+        $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
 
-        $this->className = $entityClass.'FilterType';
-        $dirPath         = $bundle->getPath().'/Form';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'FilterType.php';
+        $this->className = $entityClass . 'FilterType';
+        $dirPath = $bundle->getPath() . '/Form';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'FilterType.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
             throw new \RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
@@ -73,13 +74,13 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
         array_pop($parts);
 
         $this->renderFile('form/FormFilterType.php.twig', $this->classPath, array(
-            'fields_data'      => $this->getFieldsDataFromMetadata($metadata),
-            'namespace'        => $bundle->getNamespace(),
+            'fields_data' => $this->getFieldsDataFromMetadata($metadata),
+            'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
-            'entity_class'     => $entityClass,
-            'bundle'           => $bundle->getName(),
-            'form_class'       => $this->className,
-            'form_filter_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
+            'entity_class' => $entityClass,
+            'bundle' => $bundle->getName(),
+            'form_class' => $this->className,
+            'form_filter_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . $this->className),
         ));
     }
 
@@ -114,13 +115,13 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
                 return 'EntityFilterType';
                 break;
             case 'array':
-                throw new \Exception('The dbType "'.$dbType.'" is only for list implemented (column "'.$columnName.'")');
+                throw new \Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
                 break;
             case 'virtual':
-                throw new \Exception('The dbType "'.$dbType.'" is only for list implemented (column "'.$columnName.'")');
+                throw new \Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
                 break;
             default:
-                throw new \Exception('The dbType "'.$dbType.'" is not yet implemented (column "'.$columnName.'")');
+                throw new \Exception('The dbType "' . $dbType . '" is not yet implemented (column "' . $columnName . '")');
                 break;
         }
     }
@@ -134,7 +135,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     private function getFieldsDataFromMetadata(ClassMetadataInfo $metadata)
     {
-        $fieldsData = (array) $metadata->fieldMappings;
+        $fieldsData = (array)$metadata->fieldMappings;
 
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
@@ -158,6 +159,17 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
         });
     }
 
+    private function getBtnIndexActions()
+    {
+//        //$btn = array('new', 'filter', 'list', 'paginate');
+//        $btnRet = array();
+//
+//        foreach($this->btnAction as $accion){
+//            if()
+//        }
+
+    }
+
     /**
      * Generates the index.html.twig template in the final bundle.
      *
@@ -167,7 +179,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
     {
 
 
-        $this->renderFile('crud/views/index.html.twig.twig', $dir.'/index.html.twig', array(
+        $this->renderFile('crud/views/index.html.twig.twig', $dir . '/index.html.twig', array(
             'bundle' => $this->bundle->getName(),
             'entity' => $this->entity,
             'entity_pluralized' => $this->entityPluralized,
@@ -179,12 +191,17 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
 
-            'layout_gral' => $this->config['plantillas']['layout_gral'],
-            'block_content' => $this->config['plantillas']['block_content'],
-            'box_crud' => $this->config['plantillas']['box_crud'],
-            'box_modal' => $this->config['plantillas']['box_modal'],
-            'toolbar_pos' => $this->config['plantillas']['toolbar_pos'],
-            'btn_new'  =>  $this->config['plantillas']['btn_new'],
+            'plantillas' => $this->config['plantillas'],
+            'index_cfg' => $this->config['index']
+
+
+//            'layout_gral' => $this->config['plantillas']['layout_gral'],
+//            'block_content' => $this->config['plantillas']['block_content'],
+//            'box_crud' => $this->config['plantillas']['box_crud'],
+//            'box_modal' => $this->config['plantillas']['box_modal'],
+//            'toolbar_pos' => $this->config['plantillas']['toolbar_pos'],
+//            'list_top_action' => $this->config['index_header_action_show'],
+//            'btn_new' => $this->config['plantillas']['btn_new'],
 
         ));
     }
@@ -196,7 +213,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     protected function generateNewView($dir)
     {
-        $this->renderFile('crud/views/new.html.twig.twig', $dir.'/new.html.twig', array(
+        $this->renderFile('crud/views/new.html.twig.twig', $dir . '/new.html.twig', array(
             'bundle' => $this->bundle->getName(),
             'entity' => $this->entity,
             'entity_singularized' => $this->entitySingularized,
@@ -219,7 +236,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     protected function generateShowView($dir)
     {
-        $this->renderFile('crud/views/show.html.twig.twig', $dir.'/show.html.twig', array(
+        $this->renderFile('crud/views/show.html.twig.twig', $dir . '/show.html.twig', array(
             'bundle' => $this->bundle->getName(),
             'entity' => $this->entity,
             'entity_singularized' => $this->entitySingularized,
@@ -244,7 +261,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     protected function generateEditView($dir)
     {
-        $this->renderFile('crud/views/edit.html.twig.twig', $dir.'/edit.html.twig', array(
+        $this->renderFile('crud/views/edit.html.twig.twig', $dir . '/edit.html.twig', array(
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
             'identifier' => $this->metadata->identifier[0],
