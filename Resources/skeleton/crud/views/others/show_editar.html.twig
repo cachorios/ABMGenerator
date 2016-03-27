@@ -1,0 +1,9 @@
+{#<button type="submit" name="save_mode" value="save"#}
+        {#class="form-submit-button {{ clase }} " title="{{ etiqueta }}">#}
+    {#<i class="{{ icono }}"></i>&nbsp;{{ etiqueta }}#}
+{#</button>&nbsp;&nbsp;#}
+
+<a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': "~ entity_singularized ~".id }) }}" }}"
+   class="btn btn-xs {{ clase }} rb_edit" data-toggle="tooltip" data-placement="top" title="Editar" >
+    <span class="{{ icono }}"></span> {{ etiqueta }}
+</a>{{ '\n' }}

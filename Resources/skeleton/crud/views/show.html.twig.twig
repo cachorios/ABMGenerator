@@ -1,60 +1,121 @@
 {% block extends %}
-    {{ "{% extends '"~ layout_gral ~ "' %}" }}
+    {{ "{% extends '"~ plantillas.layout_gral ~ "' %}" }}
 {% endblock extends %}
-{{ "{% block id '" ~entity~ "' %} " }}
-{% block body %}
-    {{ "{% block " ~ block_content ~ " -%}" }}
-    {{ "{% embed '"~ box_crud ~"' with {'titulo': 'Ver " ~  entity  ~ ": ' ~ "~  entity_singularized ~ "} %}" }}
+    {{ "{% block id '" ~entity~ "' %} " }}
+    {% block body %}
+
+        {{ "{% block " ~ plantillas.block_content ~ " -%}" }}
+
+        {{ '
+        <form id="formdelete_'~ entity_singularized ~'" style="display: none;"
+              action="{{ path("'~ route_name_prefix ~ '_delete", { "id": '~ entity_singularized ~'.id }) }}" method="post"
+              name="formdelete_'~ entity_singularized ~'">
+        ' }}
+        <input type="hidden" value="DELETE" name="_method">
+        {{ '
+            {{ form_widget(delete_form.delete) }}
+            {{ form_rest(delete_form) }}
+        ' }}
+        </form>
+
+        {{ "{% embed '"~ plantillas.box_crud ~"' with {'titulo': 'Ver " ~  entity  ~ ": ' ~ "~  entity_singularized ~ "} %}" }}
+
+        {{ "      {% block rb_contenido %} " }}
+
+        {{ "        {% for type, flashMessages in app.session.flashbag.all() %} " }}
+        {{ "            {% for flashMessage in flashMessages %} " }}
+        {{ "                <div class='alert alert-{{ type }}'> " }}
+        <button data-dismiss="alert" class="close">
+            ×
+        </button>
+        {{ "                    {{ flashMessage }} " }}
+        {{ "                </div> " }}
+        {{ "            {% endfor %} " }}
+        {{ "        {% endfor %}" }}
+        <p></p>
+
+        <table class="table">
+            <tbody>
+            {%- for field, metadata in fields %}
+
+                <tr>
+                    <th class="show-header">{{ field|capitalize }}</th>
+
+                    {%- if metadata.type in ['date', 'datetime'] %}
+
+                        <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+                    {%- elseif metadata.type in ['boolean'] %}
+
+                        <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '? \'<span class="label label-success">Si</span>\' : \'<span class=\"label label-default\">No</span>\'  }}' }}</td>
+
+                    {%- else %}
+
+                        <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                    {%- endif %}
+
+                </tr>
+
+            {%- endfor %}
+
+            </tbody>
+        </table>
 
 
-    {{ "      {% block rb_contenido %} " }}
-    <p></p>
+        {{ "      {% endblock rb_contenido %} " }}
 
-    <table class="table">
-        <tbody>
-        {%- for field, metadata in fields %}
+        {{ "{% block rb_widget_header_buttons %} " }}
 
-            <tr>
-                <th class="show-header">{{ field|capitalize }}</th>
+        {% set etiqueta, icono, clase = "", "","" %}
+        <ul class="rb-toolbar pull-right">
 
-                {%- if metadata.type in ['date', 'datetime'] %}
+            {% for key, accion in show_cfg.botones_arriba %}
+                <li>
+                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                    {% include "crud/views/others/show_"~key~".html.twig" %}
+                </li>
+            {% endfor %}
 
-                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}' }}</td>
+            <li>
+                {{ "       {{ parent() }} " }}
+            </li>
+        </ul>
 
-                {%- elseif metadata.type in ['boolean'] %}
+        {{ "    {% endblock %} " }}
 
-                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ '? \'<span class="label label-success">Si</span>\' : \'<span class=\"label label-default\">No</span>\'  }}' }}</td>
+        {{ "    {% block rb_widget_footer_buttons %} " }}
+        <ul class="rb-toolbar pull-right">
 
-                {%- else %}
+            {% for key, accion in show_cfg.botones_arriba %}
+                <li>
+                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                    {% include "crud/views/others/show_"~key~".html.twig" %}
+                </li>
+            {% endfor %}
+            {#
+                esto es un espaciador para aliciar con la barra de botones superior,
+                ya que all puede estar el maximizar o minimizar
+            #}
+            <li class="tool-space-rigth">
 
-                    <td>{{ '{{ '~ entity_singularized ~'.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+            </li>
+        </ul>
 
-                {%- endif %}
-
-            </tr>
-
-        {%- endfor %}
-
-        </tbody>
-    </table>
-
-
-    {{ "      {% endblock rb_contenido %} " }}
-
-    {{ "{% block rb_widget_header_buttons %} "}}
-    {% set hide_edit, hide_delete = false, false %}
-        {% include 'crud/views/others/record_actions.html.twig' %}
-
-        {{ '{{ parent() }}' }}
-    {{ "{% endblock %} " }}
-    {{ "    {% block rb_widget_footer_buttons %} "}}
-        {% set hide_edit, hide_delete = true, false %}
-        {% include 'crud/views/others/record_actions.html.twig' %}
-    {{ "    {% endblock %} "}}
+        {{ "    {% endblock %} " }}
 
 
+        {{ "{% endembed %} " }}
 
-    {{ "{% endembed %} "}}
+        <script>
+            var form = document.getElementById("formdelete_{{ entity_singularized }}");
+            var elementos = document.getElementsByClassName("{{ entity_singularized  }}_borrar");
+            for(var i=0;i<elementos.length;i++){
+                elementos[i].addEventListener("click", function(){form.submit()}, false);
+            }
 
-    {{ "{% endblock " ~ block_content ~ " -%}" }}
-{% endblock body %}
+        </script>
+
+        {{ "{% endblock " ~ plantillas.block_content ~ " -%}" }}
+
+    {% endblock body %}

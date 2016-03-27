@@ -194,15 +194,6 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'plantillas' => $this->config['plantillas'],
             'index_cfg' => $this->config['index']
 
-
-//            'layout_gral' => $this->config['plantillas']['layout_gral'],
-//            'block_content' => $this->config['plantillas']['block_content'],
-//            'box_crud' => $this->config['plantillas']['box_crud'],
-//            'box_modal' => $this->config['plantillas']['box_modal'],
-//            'toolbar_pos' => $this->config['plantillas']['toolbar_pos'],
-//            'list_top_action' => $this->config['index_header_action_show'],
-//            'btn_new' => $this->config['plantillas']['btn_new'],
-
         ));
     }
 
@@ -225,10 +216,6 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'plantillas' => $this->config['plantillas'],
             'new_cfg' => $this->config['new']
 
-//            'layout_gral' => $this->config['plantillas']['layout_gral'],
-//            'block_content' => $this->config['plantillas']['block_content'],
-//            'box_crud' => $this->config['plantillas']['box_crud'],
-//            'box_modal' => $this->config['plantillas']['box_modal'],
         ));
     }
 
@@ -249,10 +236,8 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
 
-            'layout_gral' => $this->config['plantillas']['layout_gral'],
-            'block_content' => $this->config['plantillas']['block_content'],
-            'box_crud' => $this->config['plantillas']['box_crud'],
-            'box_modal' => $this->config['plantillas']['box_modal'],
+            'plantillas' => $this->config['plantillas'],
+            'show_cfg' => $this->config['show']
 
         ));
     }
@@ -274,10 +259,13 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             'bundle' => $this->bundle->getName(),
             'actions' => $this->actions,
 
-            'layout_gral' => $this->config['plantillas']['layout_gral'],
-            'block_content' => $this->config['plantillas']['block_content'],
-            'box_crud' => $this->config['plantillas']['box_crud'],
-            'box_modal' => $this->config['plantillas']['box_modal'],
+            'plantillas' => $this->config['plantillas'],
+            'edit_cfg' => $this->config['edit']
+
+//            'layout_gral' => $this->config['plantillas']['layout_gral'],
+//            'block_content' => $this->config['plantillas']['block_content'],
+//            'box_crud' => $this->config['plantillas']['box_crud'],
+//            'box_modal' => $this->config['plantillas']['box_modal'],
         ));
     }
 }

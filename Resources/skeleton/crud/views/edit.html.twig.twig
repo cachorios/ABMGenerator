@@ -1,39 +1,97 @@
 {% block extends %}
-    {{ "{% extends '"~ layout_gral ~ "' %}" }}
+    {{ "{% extends '"~ plantillas.layout_gral ~ "' %}" }}
 {% endblock extends %}
     {{ "{% block id '" ~entity~ "' %} " }}
     {% block body %}
-        {{ "{% block " ~ block_content ~ " -%}" }}
-        {{ "{% embed '"~ box_crud ~"' with {'titulo': 'Editar " ~  entity  ~ ": ' ~ "~ entity_singularized ~"} %}" }}
+
+        {{ "{% block " ~ plantillas.block_content ~ " -%}" }}
+        {{ '
+        <form id="formdelete_'~ entity_singularized ~'" style="display: none;"
+              action="{{ path("'~ route_name_prefix ~ '_delete", { "id": '~ entity_singularized ~'.id }) }}" method="post"
+              name="formdelete_'~ entity_singularized ~'">
+        ' }}
+        <input type="hidden" value="DELETE" name="_method">
+        {{ '
+            {{ form_widget(delete_form.delete) }}
+            {{ form_rest(delete_form) }}
+        ' }}
+        </form>
+        {% block form_inicio %}
+            {{ '   {{ form_start(edit_form) }} ' }}
+        {% endblock form_inicio %}
+
+        {{ "{% embed '"~ plantillas.box_crud ~"' with {'titulo': 'Que Editar " ~  entity  ~ ": ' ~ "~ entity_singularized ~"} %}" }}
 
         {{ "      {% block rb_contenido %} " }}
-        {{ '
-            {{ form_start(edit_form) }}
-                {{ form_widget(edit_form) }}
-                <div class="col-sm-offset-2 inner-actions">
-                    <input type="submit" value="Guardar" class="form-submit-button btn btn-sm btn-default btn-primary">
-                </div>
 
-            {{ form_end(edit_form) }}
-        ' }}
+        {{ "        {% for type, flashMessages in app.session.flashbag.all() %} " }}
+        {{ "            {% for flashMessage in flashMessages %} " }}
+        {{ "                <div class='alert alert-{{ type }}'> " }}
+        <button data-dismiss="alert" class="close">
+            ×
+        </button>
+        {{ "                    {{ flashMessage }} " }}
+        {{ "                </div> " }}
+        {{ "            {% endfor %} " }}
+        {{ "        {% endfor %}" }}
+
+        {{ '  {{ form_widget(edit_form) }} ' }}
 
         {{ "{% endblock rb_contenido %} " }}
 
-        {{ "   {% block rb_widget_buttons %} " }}
+        {{ "    {% block rb_widget_header_buttons %} " }}
 
-            {% set hide_edit, hide_delete = true, false %}
-            {% include 'crud/views/others/record_actions.html.twig' %}
-            {{ '{{ parent() }}' }}
+        {% set etiqueta, icono, clase = "", "","" %}
+        <ul class="rb-toolbar pull-right">
 
+            {% for key, accion in edit_cfg.botones_arriba %}
+                <li>
+                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                    {% include "crud/views/others/edit_"~key~".html.twig" %}
+                </li>
+            {% endfor %}
+
+            <li>
+                {{ "       {{ parent() }} " }}
+            </li>
+
+        </ul>
         {{ "{% endblock %} " }}
 
         {{ "    {% block rb_widget_footer_buttons %} " }}
-        {% set hide_edit, hide_delete = true, false %}
-        {% include 'crud/views/others/record_actions.html.twig' %}
+        <ul class="rb-toolbar pull-right">
+
+            {% for key, accion in edit_cfg.botones_abajo %}
+                <li>
+                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                    {% include "crud/views/others/edit_"~key~".html.twig" %}
+                </li>
+            {% endfor %}
+            {#
+                esto es un espaciador para aliciar con la barra de botones superior,
+                ya que all puede estar el maximizar o minimizar
+            #}
+            <li class="tool-space-rigth">
+
+            </li>
+        </ul>
+        {% block form_fin %}
+            {{ '  {{ form_end(edit_form) }}  ' }}
+        {% endblock form_fin %}
         {{ "    {% endblock %} " }}
 
         {{ "{% endembed %} " }}
 
-        {{ "{% endblock " ~ block_content ~ " -%}" }}
+        <script>
+            var form = document.getElementById("formdelete_{{ entity_singularized }}");
+            var elementos = document.getElementsByClassName("{{ entity_singularized  }}_borrar");
+            for(var i=0;i<elementos.length;i++){
+                elementos[i].addEventListener("click", function(){form.submit()}, false);
+            }
+
+        </script>
+
+        {{ "{% endblock " ~ plantillas.block_content ~ " -%}" }}
+
 
     {% endblock body %}
