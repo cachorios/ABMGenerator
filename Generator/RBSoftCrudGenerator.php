@@ -30,6 +30,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
 
     public function setCrudParm($config)
     {
+        ld($config);
         $this->config = $config;
     }
 
@@ -101,7 +102,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
             case 'integer':
             case 'bigint':
             case 'smallint':
-                return 'NumberRangeFilterType';
+                return 'NumberFilterType';
                 break;
             case 'string':
             case 'text':
@@ -159,16 +160,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
         });
     }
 
-    private function getBtnIndexActions()
-    {
-//        //$btn = array('new', 'filter', 'list', 'paginate');
-//        $btnRet = array();
-//
-//        foreach($this->btnAction as $accion){
-//            if()
-//        }
 
-    }
 
     /**
      * Generates the index.html.twig template in the final bundle.
@@ -226,6 +218,7 @@ class RBSoftCrudGenerator extends DoctrineCrudGenerator
      */
     protected function generateShowView($dir)
     {
+
         $this->renderFile('crud/views/show.html.twig.twig', $dir . '/show.html.twig', array(
             'bundle' => $this->bundle->getName(),
             'entity' => $this->entity,

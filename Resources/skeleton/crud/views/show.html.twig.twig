@@ -70,13 +70,18 @@
         {% set etiqueta, icono, clase = "", "","" %}
         <ul class="rb-toolbar pull-right">
 
-            {% for key, accion in show_cfg.botones_arriba %}
-                <li>
-                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
-                    {% include "crud/views/others/show_"~key~".html.twig" %}
-                </li>
-            {% endfor %}
-
+            {% if show_cfg.botones_arriba.enabled %}
+                {% for key, accion in show_cfg.botones_arriba %}
+                    {% if key != 'enabled' %}
+                        {% if accion.enabled %}
+                            <li>
+                                {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                                {% include "crud/views/others/show_"~key~".html.twig" %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <li>
                 {{ "       {{ parent() }} " }}
             </li>
@@ -86,13 +91,18 @@
 
         {{ "    {% block rb_widget_footer_buttons %} " }}
         <ul class="rb-toolbar pull-right">
-
-            {% for key, accion in show_cfg.botones_arriba %}
-                <li>
-                    {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
-                    {% include "crud/views/others/show_"~key~".html.twig" %}
-                </li>
-            {% endfor %}
+            {% if show_cfg.botones_abajo.enabled %}
+                {% for key, accion in show_cfg.botones_abajo %}
+                    {% if key != 'enabled' %}
+                        {% if accion.enabled %}
+                            <li>
+                                {% set etiqueta, icono, clase = accion.label, accion.icon,accion.class %}
+                                {% include "crud/views/others/show_"~key~".html.twig" %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {#
                 esto es un espaciador para aliciar con la barra de botones superior,
                 ya que all puede estar el maximizar o minimizar
@@ -109,9 +119,11 @@
 
         <script>
             var form = document.getElementById("formdelete_{{ entity_singularized }}");
-            var elementos = document.getElementsByClassName("{{ entity_singularized  }}_borrar");
-            for(var i=0;i<elementos.length;i++){
-                elementos[i].addEventListener("click", function(){form.submit()}, false);
+            var elementos = document.getElementsByClassName("{{ entity_singularized }}_borrar");
+            for (var i = 0; i < elementos.length; i++) {
+                elementos[i].addEventListener("click", function () {
+                    form.submit()
+                }, false);
             }
 
         </script>
