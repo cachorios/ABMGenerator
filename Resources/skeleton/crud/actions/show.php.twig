@@ -8,8 +8,11 @@
 {% if 'annotation' == format %}
      * @Route("/{id}", name="{{ route_name_prefix }}_show")
      * @Method("GET")
+     *
 {% endif %}
 {% endblock phpdoc_method_annotations %}
+     * @param {{ entity_class }} ${{ entity_singularized }}
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
 {% block method_definition %}
     public function showAction({{ entity_class }} ${{ entity_singularized }})

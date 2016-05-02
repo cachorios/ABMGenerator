@@ -8,8 +8,11 @@
 {% if 'annotation' == format %}
      * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
      * @Method("GET")
+     *
 {% endif %}
 {% endblock phpdoc_method_annotations %}
+     * @param Request $request, {{ entity_class }} ${{ entity_singularized }}
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
 {% block method_definition %}
     public function editAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
@@ -45,7 +48,7 @@
         $form = $this->createForm( {{ entity_class }}Type::class, ${{ entity_singularized }}, array(
             'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity_singularized }}->getId())),
             'method' => 'PUT',
-            'attr'   => array("id" => "formEmpresa"),
+            'attr'   => array("id" => "form-{{ entity_singularized }}-edit"),
         ));
 
         {#$form->add('submit', 'submit', array('label' => 'Guardar'));#}

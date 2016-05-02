@@ -132,10 +132,22 @@
         </li>
     </ul>
     {{ "     {% endblock %} " }}
-    {#{% endif %}#}
 
 
     {{ " {% endembed %} " }}
 
     {{ "{% endblock " ~ plantillas.block_content ~ " -%}" }}
+
+    {{ '{% block js_footer %}' }}
+        {{ '<script src="{{  asset("bundles/abmgenerator/scripts/abmgenerator.js")}}"></script>' }}
+        <script>
+            $(document).ready(function(e){
+                $(".list-delete").click(function(e){
+                    return eliminar($(e.target).closest("form"),'Estas seguro de Borrar este/a {{ entity_singularized }}?',"Este proceso es irreversible!");
+                    e.preventDefault()
+                })
+            })
+        </script>
+    {{ '{% endblock %} ' }}
+
 {% endblock body %}

@@ -93,17 +93,19 @@
 
         {{ "{% endembed %} " }}
 
+        {{ '{% block js_footer %}' }}
+        {{ '<script src="{{  asset("bundles/abmgenerator/scripts/abmgenerator.js")}}"></script>' }}
         <script>
             var form = document.getElementById("formdelete_{{ entity_singularized }}");
             var elementos = document.getElementsByClassName("{{ entity_singularized }}_borrar");
             for (var i = 0; i < elementos.length; i++) {
                 elementos[i].addEventListener("click", function () {
-                    form.submit()
+                    return eliminar(form, 'Estas seguro de Borrar este/a {{ entity_singularized }}?', "Este proceso es irreversible!");
                 }, false);
             }
 
         </script>
-
+        {{ '{% endblock %} ' }}
         {{ "{% endblock " ~ plantillas.block_content ~ " -%}" }}
 
 

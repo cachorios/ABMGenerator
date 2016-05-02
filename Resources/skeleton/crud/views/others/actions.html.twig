@@ -20,9 +20,23 @@
 
 
     {%- for action in record_actions %}
-    <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"
-       class="btn btn-xs {{ attribute(css_class,action) }} rb_{{ action }}" data-toggle="tooltip" data-placement="top" title="{{ attribute(msg,action) }}" >
-        <span class="glyphicon {{ attribute(icono,action) }}"></span>
-        </a>{{ '\n' }}
+        {% if action == 'delete' %}
+
+            {{ '{% set delete_form = deleteforms[loop.index0] %}' }}
+
+            <form class="formdelete" style="display: inline-block;"
+                  action="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"
+                  method="post" name="formdelete_{{ entity_singularized }}">
+                <input type="hidden" value="DELETE" name="_method">
+                {{ " {{ form_widget( delete_form.delete, {'attr': { 'class': 'hidden' } }) }} " }}
+                <button class="list-delete"><i class="fa fa-trash"></i></button>
+                {{ ' {{ form_rest(delete_form) }} ' }}
+            {{ ' {{ form_end(delete_form) }} ' }}
+        {% else %}
+            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"
+               class="btn btn-xs {{ attribute(css_class,action) }} rb_{{ action }}" data-toggle="tooltip" data-placement="top" title="{{ attribute(msg,action) }}" >
+                <span class="glyphicon {{ attribute(icono,action) }}"></span>
+                </a>{{ '\n' }}
+        {% endif %}
     {%- endfor %}
 

@@ -16,8 +16,18 @@
 {% endblock method_definition %}
     {
 {% block method_body %}
+
+
     list($filterForm, $queryBuilder) = $this->filter($request);
     $pager = $this->getPager($queryBuilder, $request);
+
+    $delete_forms = array_map(
+        function ($element) {
+        return $this->createDeleteForm($element)->createView();
+        }
+        , $pager->getItems()
+    );
+
 {% endblock method_body %}
 
 {% block method_return %}
@@ -25,6 +35,7 @@
     return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/index.html.twig', array(
         'pager' => $pager,
         'filterform'    => $filterForm->createView(),
+        'deleteforms'   => $delete_forms,
     ));
 {% endblock method_return %}
     }

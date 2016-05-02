@@ -8,8 +8,11 @@
 {% if 'annotation' == format %}
      * @Route("/new", name="{{ route_name_prefix }}_new")
      * @Method("GET")
+     *
 {% endif %}
 {% endblock phpdoc_method_annotations %}
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
 {% block method_definition %}
     public function newAction()
